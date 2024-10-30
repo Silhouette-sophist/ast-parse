@@ -1,31 +1,30 @@
 package main
 
 import (
-	"ast-parse/visitor"
-	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/token"
 	"log"
+	"os"
 )
 
-func parseGoFile(filePath string) error {
-	// 1.创建一个新的文件集
-	fset := token.NewFileSet()
-	// 2.解析 Go 文件
-	node, err := parser.ParseFile(fset, filePath, nil, parser.ParseComments)
-	if err != nil {
-		return fmt.Errorf("failed to parse the file: %v", err)
-	}
-	// 3.遍历 AST 节点
-	simpleVisitor := visitor.SimpleVisitor{}
-	ast.Walk(&simpleVisitor, node)
-	return nil
-}
-
 func main() {
-	filePath := "/Users/silhouette/codeworks/test-pool/main.go" // 替换为你的 Go 文件路径
-	if err := parseGoFile(filePath); err != nil {
-		log.Fatalf("Error: %v", err)
+	path := "/Users/silhouette/codeworks/ast-parse"
+	stat, err := os.Stat(path)
+	if err != nil {
+		log.Fatalf("read stat error %v", err)
+		return
+	}
+	if stat.IsDir() {
+		log.Println("dir parse")
+		err := parseGoDir(path)
+		if err != nil {
+			log.Fatalf("parseGoDir error %v", err)
+			return
+		}
+	} else {
+		log.Println("file parse")
+		err := parseGoFile(path)
+		if err != nil {
+			log.Fatalf("parseGoFile error %v", err)
+			return
+		}
 	}
 }

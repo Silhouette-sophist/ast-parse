@@ -1,8 +1,8 @@
 package visitor
 
 import (
-	"fmt"
 	"go/ast"
+	"log"
 )
 
 type SimpleVisitor struct {
@@ -10,18 +10,20 @@ type SimpleVisitor struct {
 
 func (receiver *SimpleVisitor) Visit(node ast.Node) ast.Visitor {
 	switch n := node.(type) {
+	case *ast.File:
+		log.Printf("file %v", n.Name)
 	case *ast.FuncDecl:
-		fmt.Println("func decl")
+		log.Printf("func decl")
 	case *ast.GoStmt:
-		fmt.Println("go stat")
+		log.Printf("go stat")
 	case *ast.BlockStmt:
-		fmt.Println("block")
+		log.Printf("block")
 		if len(n.List) > 0 {
 			switch n.List[0].(type) {
 			case *ast.CaseClause:
-				fmt.Println("case clause")
+				log.Printf("case clause")
 			case *ast.CommClause:
-				fmt.Println("common clause")
+				log.Printf("common clause")
 			}
 		}
 	}
