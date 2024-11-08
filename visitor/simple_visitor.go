@@ -13,11 +13,11 @@ func (receiver *SimpleVisitor) Visit(node ast.Node) ast.Visitor {
 	case *ast.File:
 		log.Printf("file %v", n.Name)
 	case *ast.FuncDecl:
-		log.Printf("func decl")
+		log.Printf("func decl %v", n)
 	case *ast.GoStmt:
-		log.Printf("go stat")
+		log.Printf("go stat %v", n)
 	case *ast.BlockStmt:
-		log.Printf("block")
+		log.Printf("block, %v", n)
 		if len(n.List) > 0 {
 			switch n.List[0].(type) {
 			case *ast.CaseClause:
@@ -26,6 +26,8 @@ func (receiver *SimpleVisitor) Visit(node ast.Node) ast.Visitor {
 				log.Printf("common clause")
 			}
 		}
+	case *ast.IfStmt:
+		log.Printf("ifStmt, %v", n)
 	}
 	return receiver
 }
