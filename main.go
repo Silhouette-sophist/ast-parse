@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ast-parse/parse"
 	"log"
 	"os"
 )
@@ -14,14 +15,14 @@ func main() {
 	}
 	if stat.IsDir() {
 		log.Println("dir parse")
-		err := parseGoDir(path)
+		err := parse.GoDir(path)
 		if err != nil {
 			log.Fatalf("parseGoDir error %v", err)
 			return
 		}
 	} else {
 		log.Println("file parse")
-		err := parseGoFile(path)
+		err := parse.GoFile(path)
 		if err != nil {
 			log.Fatalf("parseGoFile error %v", err)
 			return
